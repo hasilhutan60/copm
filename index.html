@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COPM Kasuarina Karsa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: #050505;
+            color: #ffffff;
+        }
+        .fade-in { animation: fadeIn 0.4s ease-out forwards; }
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(15px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+        
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #111; }
+        ::-webkit-scrollbar-thumb { background: #dc2626; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #b91c1c; }
+
+        .glow-red { box-shadow: 0 0 20px rgba(220, 38, 38, 0.4); }
+        
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover, 
+        input:-webkit-autofill:focus, 
+        input:-webkit-autofill:active{
+            -webkit-box-shadow: 0 0 0 30px #111111 inset !important;
+            -webkit-text-fill-color: white !important;
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col relative selection:bg-red-600 selection:text-white overflow-x-hidden">
+
+    <!-- Header / Navbar -->
+    <header class="py-5 px-4 md:px-8 max-w-7xl mx-auto w-full flex justify-between items-center z-40 relative">
+        <div class="flex items-center gap-3 cursor-pointer" onclick="switchView('home')">
+            <img src="https://i.ibb.co/TB5tGWd5/Whats-App-Image-2026-10-27-at-00-16-51.jpg" alt="Logo Kasuarina Karsa" class="w-11 h-11 md:w-12 md:h-12 rounded-full object-cover shadow-lg shadow-red-600/20 border border-red-900/30">
+            <div>
+                <h1 class="text-base md:text-xl font-extrabold text-white tracking-wide leading-tight">KASUARINA <span class="text-red-600">KARSA</span></h1>
+                <p class="text-[9px] md:text-[10px] text-gray-400 font-semibold tracking-widest uppercase">Hasil Hutan 60</p>
+            </div>
+        </div>
+        
+        <!-- Pill Nav Desktop -->
+        <nav class="hidden md:flex bg-[#111111] border border-red-900/30 rounded-full p-1.5 items-center gap-1 shadow-2xl">
+            <button onclick="switchView('home')" id="nav-home" class="nav-btn px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300 bg-red-600 text-white flex items-center gap-2">
+                <i class="fa-solid fa-house"></i> Beranda
+            </button>
+            <button onclick="switchView('status')" id="nav-status" class="nav-btn px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300 text-gray-400 hover:text-white flex items-center gap-2">
+                <i class="fa-solid fa-clock-rotate-left"></i> Status
+            </button>
+            <button onclick="switchView('admin-login')" id="nav-admin" class="nav-btn px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300 text-gray-400 hover:text-white flex items-center gap-2">
+                <i class="fa-solid fa-shield-halved"></i> Admin
+            </button>
+        </nav>
+
+        <!-- Mobile Menu Toggle Button -->
+        <button class="md:hidden text-white bg-[#111111] border border-red-900/30 p-2.5 rounded-xl text-lg focus:outline-none" onclick="toggleMobileMenu()">
+            <i class="fa-solid fa-bars" id="mobileMenuIcon"></i>
+        </button>
+    </header>
+
+    <!-- Mobile Navigation Drawer / Dropdown -->
+    <div id="mobileMenu" class="hidden md:hidden bg-[#111111] border-b border-red-900/30 px-6 py-6 flex flex-col gap-3 absolute top-20 left-0 w-full z-50 shadow-2xl transition-all">
+        <button onclick="switchView('home'); toggleMobileMenu()" class="text-left py-3 px-4 rounded-xl hover:bg-red-900/20 text-white font-medium flex items-center gap-3">
+            <i class="fa-solid fa-house text-red-500 w-5"></i> Beranda
+        </button>
+        <button onclick="switchView('status'); toggleMobileMenu()" class="text-left py-3 px-4 rounded-xl hover:bg-red-900/20 text-white font-medium flex items-center gap-3">
+            <i class="fa-solid fa-clock-rotate-left text-red-500 w-5"></i> Status Pendaftaran
+        </button>
+        <button onclick="switchView('admin-login'); toggleMobileMenu()" class="text-left py-3 px-4 rounded-xl hover:bg-red-900/20 text-white font-medium flex items-center gap-3">
+            <i class="fa-solid fa-shield-halved text-red-500 w-5"></i> Admin Panel
+        </button>
+    </div>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow p-4 md:p-8 max-w-7xl mx-auto w-full flex flex-col justify-center">
+        
+        <!-- ================= VIEW: HOME (HERO SECTION) ================= -->
+        <div id="view-home" class="fade-in w-full">
+            <div class="bg-gradient-to-b from-[#111111] to-[#0a0a0a] rounded-[2rem] border border-red-900/30 shadow-[0_0_50px_rgba(220,38,38,0.05)] p-6 sm:p-10 md:p-16 lg:p-24 flex flex-col items-center text-center relative overflow-hidden">
+                
+                <!-- Background Glow -->
+                <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-[200px] bg-red-600/10 blur-[100px] rounded-full pointer-events-none"></div>
+
+                <!-- Top Pill Badge -->
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-red-800/50 bg-[#1a0a0a] text-red-400 text-xs font-bold tracking-wider mb-6 md:mb-8 uppercase z-10">
+                    <div class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
+                    Portal COPM Resmi 2026
+                </div>
+
+                <h2 class="text-3xl sm:text-4xl md:text-6xl font-extrabold text-white mb-4 md:mb-6 tracking-tight z-10">
+                    Selamat Datang di <br class="hidden md:block"/> 
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-red-600">COPM KASUARINA</span>
+                </h2>
+
+                <p class="text-gray-400 text-xs sm:text-sm md:text-base max-w-3xl leading-relaxed mb-8 md:mb-10 z-10">
+                    <strong class="text-white">COPM Pengajuan Design</strong> disediakan khusus untuk mahasiswa yang akan melaksanakan ujian. 
+                    Perhatian: COPM wajib diisi maksimal <strong class="text-red-500">3 hari (H-3)</strong> sebelum tanggal pelaksanaan. 
+                    Siapkan foto terbaik Anda dan pastikan seluruh identitas yang dimasukkan sudah benar dan sesuai.
+                </p>
+
+                <!-- Dual Action Buttons -->
+                <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto z-10">
+                    <button onclick="startRegistration('Kolokium')" class="bg-red-600 hover:bg-red-500 text-white rounded-full px-8 py-3.5 font-bold transition-all glow-red flex items-center justify-center gap-2 text-sm md:text-base">
+                        Daftar Kolokium <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                    <button onclick="startRegistration('Seminar Hasil')" class="bg-[#111111] border border-red-600/50 hover:bg-red-950/30 text-white rounded-full px-8 py-3.5 font-bold transition-all flex items-center justify-center gap-2 text-sm md:text-base">
+                        Daftar Seminar Hasil
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= VIEW: NIM VALIDATION ================= -->
+        <div id="view-nim" class="hidden fade-in max-w-md mx-auto w-full mt-6 md:mt-10">
+            <div class="bg-[#111111] p-6 sm:p-8 rounded-3xl shadow-2xl border border-red-900/30 text-center relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-600 to-red-900"></div>
+                
+                <button onclick="switchView('home')" class="text-sm text-gray-400 hover:text-white mb-6 flex items-center gap-2 transition-colors">
+                    <i class="fa-solid fa-arrow-left"></i> Kembali
+                </button>
+                
+                <h3 class="text-2xl font-bold text-white mb-2">Validasi Identitas</h3>
+                <p class="text-gray-400 text-xs sm:text-sm mb-6 md:mb-8" id="nimSubtitle">Masukkan NIM Anda untuk melanjutkan pendaftaran.</p>
+                
+                <div class="text-left mb-6">
+                    <label class="block text-sm font-semibold text-gray-300 mb-2">NIM Mahasiswa</label>
+                    <input type="text" id="inputNim" class="w-full bg-[#050505] border border-red-900/50 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-600 focus:border-red-600 outline-none uppercase transition-all" placeholder="Masukan NIM">
+                </div>
+                
+                <button onclick="validateNim()" class="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-3.5 rounded-xl transition-all shadow-lg shadow-red-600/20">
+                    Verifikasi NIM
+                </button>
+            </div>
+        </div>
+
+        <!-- ================= VIEW: FORM PENDAFTARAN ================= -->
+        <div id="view-form" class="hidden fade-in max-w-3xl mx-auto w-full mt-4">
+            <div class="bg-[#111111] p-5 sm:p-8 md:p-10 rounded-[2rem] shadow-2xl border border-red-900/30">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 md:mb-8 pb-6 border-b border-gray-800 gap-3">
+                    <div>
+                        <h2 class="text-xl sm:text-2xl font-extrabold text-white" id="formTitle">Formulir Pendaftaran</h2>
+                        <p class="text-gray-400 text-xs sm:text-sm mt-1">Lengkapi data dengan teliti.</p>
+                    </div>
+                    <span class="bg-red-950 text-red-400 border border-red-800 px-4 py-1.5 rounded-full text-xs sm:text-sm font-bold uppercase tracking-wide" id="formBadge">Kolokium</span>
+                </div>
+
+                <form id="mainForm" onsubmit="submitForm(event)" class="space-y-5 md:space-y-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-300 mb-2">NIM</label>
+                            <input type="text" id="f_nim" class="w-full bg-[#0a0a0a] border border-gray-800 text-gray-500 rounded-xl px-4 py-3 outline-none cursor-not-allowed text-sm" readonly>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-300 mb-2">Nama Lengkap</label>
+                            <input type="text" id="f_nama" required class="w-full bg-[#050505] border border-red-900/50 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-600 outline-none transition-all text-sm">
+                        </div>
+                    </div>
+
+                    <div class="space-y-4 pt-4 border-t border-gray-800">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-300 mb-2">Dosen Pembimbing 1 (Wajib) <span class="text-red-500">*</span></label>
+                            <input type="text" id="f_dosbing1" required class="w-full bg-[#050505] border border-red-900/50 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-600 outline-none transition-all text-sm" placeholder="Nama beserta gelar lengkap">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-300 mb-2">Dosen Pembimbing 2 (Jika tidak ada beri "-"))</label>
+                            <input type="text" id="f_dosbing2" class="w-full bg-[#050505] border border-gray-800 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-600 outline-none transition-all text-sm" placeholder="Nama beserta gelar lengkap">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-300 mb-2">Dosen Moderator (Wajib) <span class="text-red-500">*</span></label>
+                            <input type="text" id="f_moderator" required class="w-full bg-[#050505] border border-red-900/50 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-600 outline-none transition-all text-sm" placeholder="Nama beserta gelar lengkap">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 pt-4 border-t border-gray-800">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-300 mb-2">Tanggal Pelaksanaan <span class="text-red-500">*</span></label>
+                            <input type="date" id="f_tanggal" required onchange="checkDate()" class="w-full bg-[#050505] border border-red-900/50 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-600 outline-none transition-all [color-scheme:dark] text-sm">
+                            <p class="text-xs text-red-500 mt-2 font-medium hidden" id="dateError"><i class="fa-solid fa-circle-exclamation"></i> Maksimal H-3 sebelum pelaksanaan.</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-300 mb-2">Jam Mulai <span class="text-red-500">*</span></label>
+                            <input type="time" id="f_jamMulai" required class="w-full bg-[#050505] border border-red-900/50 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-600 outline-none transition-all [color-scheme:dark] text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-300 mb-2">Jam Selesai <span class="text-red-500">*</span></label>
+                            <input type="time" id="f_jamSelesai" required class="w-full bg-[#050505] border border-red-900/50 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-600 outline-none transition-all [color-scheme:dark] text-sm">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 pt-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-300 mb-2">Ruangan <span class="text-red-500">*</span></label>
+                            <select id="f_ruangan" required onchange="toggleRuanganManual()" class="w-full bg-[#050505] border border-red-900/50 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-600 outline-none transition-all text-sm">
+                                <option value="" disabled selected>Pilih Ruangan...</option>
+                                <option value="ABT 1">ABT 1</option>
+                                <option value="ABT 2">ABT 2</option>
+                                <option value="Lainnya">Lainnya...</option>
+                            </select>
+                            <input type="text" id="f_ruangan_manual" class="hidden w-full bg-[#050505] border border-red-900/50 text-white rounded-xl px-4 py-3 mt-3 focus:ring-2 focus:ring-red-600 outline-none transition-all text-sm" placeholder="Sebutkan Ruangan / Link Zoom">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-300 mb-2">Upload Pas Foto <span class="text-red-500">*</span></label>
+                            <input type="file" id="f_foto" required accept="image/*" class="w-full bg-[#050505] border border-gray-800 text-gray-400 rounded-xl px-3 py-2 outline-none file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-red-950 file:text-red-400 hover:file:bg-red-900 transition-all cursor-pointer text-sm">
+                        </div>
+                    </div>
+
+                    <div class="pt-2">
+                        <label class="block text-sm font-semibold text-gray-300 mb-2">Judul Skripsi / Penelitian <span class="text-red-500">*</span></label>
+                        <textarea id="f_judul" required rows="3" class="w-full bg-[#050505] border border-red-900/50 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-600 outline-none transition-all resize-none text-sm" placeholder="Tuliskan judul penelitian Anda dengan lengkap..."></textarea>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-800">
+                        <button type="button" onclick="switchView('home')" class="w-full sm:w-1/3 bg-[#1a1a1a] hover:bg-[#2a2a2a] border border-gray-700 text-white font-bold py-3.5 rounded-xl transition-all text-sm">Batal</button>
+                        <button type="submit" id="btnSubmit" class="w-full sm:w-2/3 bg-red-600 hover:bg-red-500 text-white font-bold py-3.5 rounded-xl transition-all glow-red flex justify-center items-center gap-2 text-sm">
+                            <span>Kirim Pendaftaran</span> <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- ================= VIEW: STATUS & DOWNLOAD ================= -->
+        <div id="view-status" class="hidden fade-in w-full mt-4">
+            <div class="bg-[#111111] p-5 sm:p-8 md:p-10 rounded-[2rem] shadow-2xl border border-red-900/30">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 md:mb-8 gap-3">
+                    <div>
+                        <h2 class="text-xl sm:text-2xl font-extrabold text-white">Status Pendaftaran</h2>
+                        <p class="text-xs sm:text-sm text-gray-400 mt-1">Pantau proses pengajuan design Anda.</p>
+                    </div>
+                    <div class="flex items-center gap-2 text-xs font-bold text-red-400 bg-red-950/30 border border-red-900/50 px-4 py-2 rounded-full">
+                        <div class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div> Live Update
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto rounded-xl border border-gray-800">
+                    <table class="w-full text-left border-collapse min-w-[750px]">
+                        <thead>
+                            <tr class="bg-[#1a0a0a] text-red-300 border-b border-gray-800">
+                                <th class="p-4 md:p-5 font-semibold text-xs md:text-sm uppercase tracking-wide">Nama / NIM</th>
+                                <th class="p-4 md:p-5 font-semibold text-xs md:text-sm uppercase tracking-wide">Jenis</th>
+                                <th class="p-4 md:p-5 font-semibold text-xs md:text-sm uppercase tracking-wide">Pelaksanaan</th>
+                                <th class="p-4 md:p-5 font-semibold text-xs md:text-sm uppercase tracking-wide">Status</th>
+                                <th class="p-4 md:p-5 font-semibold text-xs md:text-sm uppercase tracking-wide text-center">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="statusTableBody" class="divide-y divide-gray-800/50 bg-[#0b0404] text-sm">
+                            <tr><td colspan="5" class="p-10 text-center text-gray-500"><i class="fa-solid fa-spinner fa-spin mr-2"></i>Memuat data sistem...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= VIEW: ADMIN LOGIN ================= -->
+        <div id="view-admin-login" class="hidden fade-in max-w-sm mx-auto w-full mt-12 md:mt-16">
+            <div class="bg-[#111111] p-6 sm:p-10 rounded-[2rem] shadow-2xl border border-red-900/30 text-center relative">
+                <div class="w-16 h-16 bg-gradient-to-br from-gray-800 to-black rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg border border-gray-700">
+                    <i class="fa-solid fa-user-shield text-2xl text-red-500"></i>
+                </div>
+                <h3 class="text-2xl font-extrabold text-white mb-2">Admin Akses</h3>
+                <p class="text-xs sm:text-sm text-gray-400 mb-8">Masuk untuk mengelola pendaftaran.</p>
+                
+                <div class="text-left mb-6">
+                    <label class="block text-sm font-semibold text-gray-300 mb-2">Username Kredensial</label>
+                    <input type="password" id="inputAdminUser" class="w-full bg-[#050505] border border-gray-700 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-600 outline-none transition-all text-sm" placeholder="••••••••">
+                </div>
+                <button onclick="loginAdmin()" class="w-full bg-white hover:bg-gray-200 text-black font-extrabold py-3.5 rounded-xl transition-all shadow-lg text-sm">
+                    Otorisasi <i class="fa-solid fa-lock-open ml-2"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- ================= VIEW: ADMIN DASHBOARD ================= -->
+        <div id="view-admin-panel" class="hidden fade-in w-full mt-4">
+            <div class="bg-[#111111] p-5 sm:p-8 md:p-10 rounded-[2rem] shadow-2xl border border-red-900/30">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 md:mb-8 border-b border-gray-800 pb-6 gap-3">
+                    <div>
+                        <h2 class="text-xl sm:text-2xl font-extrabold text-white">Console Admin</h2>
+                        <p class="text-xs sm:text-sm text-gray-400 mt-1">Kelola data, detail pendaftaran, dan unggah hasil design.</p>
+                    </div>
+                    <div class="flex flex-wrap gap-3">
+                        <button onclick="exportToCSV()" class="bg-green-700 hover:bg-green-600 text-white px-4 md:px-5 py-2.5 rounded-xl font-bold transition-all shadow-lg flex items-center gap-2 text-xs md:text-sm">
+                            <i class="fa-solid fa-file-excel"></i> Unduh Rekap
+                        </button>
+                        <button onclick="switchView('home')" class="bg-gray-800 hover:bg-gray-700 text-white px-4 md:px-5 py-2.5 rounded-xl font-bold transition-all text-xs md:text-sm border border-gray-700">
+                            Keluar <i class="fa-solid fa-arrow-right-from-bracket ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto rounded-xl border border-gray-800">
+                    <table class="w-full text-left border-collapse min-w-[1050px]">
+                        <thead>
+                            <tr class="bg-[#1a0a0a] text-gray-300 border-b border-gray-800 text-xs md:text-sm uppercase tracking-wide">
+                                <th class="p-4 font-semibold">Tgl Submit</th>
+                                <th class="p-4 font-semibold">Mahasiswa</th>
+                                <th class="p-4 font-semibold">Jenis</th>
+                                <th class="p-4 font-semibold">Dosen & Moderator</th>
+                                <th class="p-4 font-semibold">Pelaksanaan & Tempat</th>
+                                <th class="p-4 font-semibold">Judul Skripsi</th>
+                                <th class="p-4 font-semibold">Status & File</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminTableBody" class="divide-y divide-gray-800/50 bg-[#0b0404] text-sm">
+                            <!-- Admin data populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Custom Modal -->
+    <div id="customModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300 p-4">
+        <div class="bg-[#111111] border border-red-900/50 rounded-[2rem] p-6 sm:p-8 max-w-sm w-full mx-auto shadow-2xl transform scale-95 transition-transform duration-300 text-center" id="modalContent">
+            <div id="modalIcon" class="mx-auto w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center mb-6 text-3xl sm:text-4xl shadow-inner"></div>
+            <h3 id="modalTitle" class="text-xl sm:text-2xl font-extrabold text-white mb-3"></h3>
+            <div id="modalBody" class="text-gray-400 text-xs sm:text-sm mb-6 sm:mb-8 leading-relaxed"></div>
+            <button onclick="closeModal()" class="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-3 rounded-xl transition-all glow-red text-sm">Tutup</button>
+        </div>
+    </div>
+
+    <!-- Hidden Clipboard Container -->
+    <textarea id="captionClipboard" class="absolute left-[-9999px]"></textarea>
+
+    <script>
+        // === INISIALISASI SUPABASE KASUARINA KARSA ===
+        const supabaseUrl = 'https://oqrwdkvqtjmfpouycaes.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9xcndka3ZxdGptZnBvdXljYWVzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMwMjc3OTQsImV4cCI6MjEwODYwMzc5NH0.tngp9VjkPR5PNhWWWL14Zj9lCdt19Ryw3b6M4WQx2DU';
+        const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+        let currentType = '';
+        let allSubmissions = [];
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        async function fetchSubmissions() {
+            const { data, error } = await supabaseClient
+                .from('pendaftaran_copm')
+                .select('*')
+                .order('created_at', { ascending: false });
+            
+            if(data) {
+                allSubmissions = data.map(row => ({
+                    id: row.id,
+                    nim: row.nim,
+                    nama: row.nama,
+                    jenis: row.jenis_pendaftaran,
+                    dosbing1: row.dosen_pembimbing_1,
+                    dosbing2: row.dosen_pembimbing_2,
+                    moderator: row.dosen_moderator,
+                    tanggal: row.tanggal_pelaksanaan,
+                    jamMulai: row.jam_mulai,
+                    jamSelesai: row.jam_selesai,
+                    ruangan: row.ruangan,
+                    judul: row.judul_skripsi,
+                    status: row.status,
+                    fileUrl: row.file_design_url,
+                    createdAt: row.created_at
+                }));
+                renderStatusTable();
+                const adminPanel = document.getElementById('view-admin-panel');
+                if(adminPanel && !adminPanel.classList.contains('hidden')) {
+                    renderAdminTable();
+                }
+            }
+        }
+
+        function updateNavState(viewId) {
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.className = 'nav-btn px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300 flex items-center gap-2 text-gray-400 hover:text-white';
+            });
+            
+            let activeBtn = null;
+            if(viewId === 'home') activeBtn = document.getElementById('nav-home');
+            else if(viewId === 'status') activeBtn = document.getElementById('nav-status');
+            else if(viewId === 'admin-login' || viewId === 'admin-panel') activeBtn = document.getElementById('nav-admin');
+
+            if(activeBtn) {
+                activeBtn.className = 'nav-btn px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300 flex items-center gap-2 bg-red-600 text-white';
+            }
+        }
+
+        function switchView(viewId) {
+            ['view-home', 'view-nim', 'view-form', 'view-status', 'view-admin-login', 'view-admin-panel'].forEach(id => {
+                const el = document.getElementById(id);
+                if(el) el.classList.add('hidden');
+            });
+            const targetEl = document.getElementById(`view-${viewId}`);
+            if(targetEl) {
+                targetEl.classList.remove('hidden');
+                updateNavState(viewId);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+                if(viewId === 'status') fetchSubmissions();
+            }
+        }
+
+        function startRegistration(type) {
+            currentType = type;
+            document.getElementById('nimSubtitle').innerText = `Masukkan NIM Anda untuk mendaftar COPM ${type}`;
+            document.getElementById('inputNim').value = '';
+            switchView('nim');
+        }
+
+        async function validateNim() {
+            const nimInput = document.getElementById('inputNim').value.trim().toUpperCase();
+            if(!nimInput) {
+                showModal('Validasi Gagal', 'NIM tidak boleh kosong!', 'warning');
+                return;
+            }
+            
+            const btn = document.querySelector('#view-nim button');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memeriksa Server...';
+            
+            const { data, error } = await supabaseClient
+                .from('mahasiswa')
+                .select('nama_lengkap')
+                .eq('nim', nimInput)
+                .single();
+                
+            btn.innerHTML = 'Verifikasi NIM';
+
+            if (error || !data) {
+                showModal('NIM Tidak Terdaftar', `NIM ${nimInput} tidak ditemukan dalam database sistem. Pastikan Anda memasukkan NIM dengan benar.`, 'error');
+                return;
+            }
+
+            let nama = data.nama_lengkap;
+            
+            document.getElementById('formTitle').innerText = `Formulir ${currentType}`;
+            document.getElementById('formBadge').innerText = currentType;
+            document.getElementById('mainForm').reset();
+            document.getElementById('f_ruangan_manual').classList.add('hidden');
+            
+            document.getElementById('f_nim').value = nimInput;
+            document.getElementById('f_nama').value = nama;
+            document.getElementById('f_nama').readOnly = true;
+            document.getElementById('f_nama').classList.add('text-gray-500');
+            
+            switchView('form');
+        }
+
+        function checkDate() {
+            const dateInput = document.getElementById('f_tanggal');
+            const errorMsg = document.getElementById('dateError');
+            const btnSubmit = document.getElementById('btnSubmit');
+            
+            if(!dateInput.value) return;
+
+            const selectedDate = new Date(dateInput.value);
+            selectedDate.setHours(0,0,0,0);
+            const today = new Date();
+            today.setHours(0,0,0,0);
+
+            const diffTime = selectedDate - today;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+            if (diffDays < 3) {
+                errorMsg.classList.remove('hidden');
+                btnSubmit.disabled = true;
+                btnSubmit.classList.add('opacity-50', 'cursor-not-allowed');
+                btnSubmit.classList.remove('glow-red', 'hover:bg-red-500');
+                showModal('Peringatan Sistem', 'Maksimal mengisi COPM Design adalah 3 hari (H-3) sebelum tanggal pelaksanaan.', 'warning');
+                dateInput.value = '';
+            } else {
+                errorMsg.classList.add('hidden');
+                btnSubmit.disabled = false;
+                btnSubmit.classList.remove('opacity-50', 'cursor-not-allowed');
+                btnSubmit.classList.add('glow-red', 'hover:bg-red-500');
+            }
+        }
+
+        function toggleRuanganManual() {
+            const select = document.getElementById('f_ruangan');
+            const manual = document.getElementById('f_ruangan_manual');
+            if(select.value === 'Lainnya') {
+                manual.classList.remove('hidden');
+                manual.required = true;
+            } else {
+                manual.classList.add('hidden');
+                manual.required = false;
+            }
+        }
+
+        async function submitForm(e) {
+            e.preventDefault();
+
+            const btn = document.getElementById('btnSubmit');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengirim Data...';
+            btn.disabled = true;
+
+            const ruanganVal = document.getElementById('f_ruangan').value;
+            const finalRuangan = ruanganVal === 'Lainnya' ? document.getElementById('f_ruangan_manual').value : ruanganVal;
+
+            const submitData = {
+                nim: document.getElementById('f_nim').value,
+                nama: document.getElementById('f_nama').value,
+                jenis_pendaftaran: currentType,
+                dosen_pembimbing_1: document.getElementById('f_dosbing1').value,
+                dosen_pembimbing_2: document.getElementById('f_dosbing2').value || null,
+                dosen_moderator: document.getElementById('f_moderator').value,
+                tanggal_pelaksanaan: document.getElementById('f_tanggal').value,
+                jam_mulai: document.getElementById('f_jamMulai').value,
+                jam_selesai: document.getElementById('f_jamSelesai').value,
+                ruangan: finalRuangan,
+                judul_skripsi: document.getElementById('f_judul').value,
+                status: 'Terkirim'
+            };
+
+            const { error } = await supabaseClient.from('pendaftaran_copm').insert([submitData]);
+
+            if (error) {
+                console.error(error);
+                showModal('Gagal Terkirim', 'Terjadi kesalahan sistem saat menghubungi server Supabase.', 'error');
+                btn.innerHTML = '<span>Kirim Pendaftaran</span> <i class="fa-solid fa-paper-plane"></i>';
+                btn.disabled = false;
+                return;
+            }
+
+            await fetchSubmissions();
+            
+            const congratsType = currentType === 'Kolokium' ? 'Selamat Kolokium!' : 'Selamat Seminar Hasil!';
+            const textType = currentType === 'Kolokium' ? 'Kolokium' : 'Seminar Hasil';
+            
+            const successHTML = `
+                <div class="mb-5 text-gray-300">Data COPM Design Anda telah berhasil terekam sistem.</div>
+                <div class="text-xl sm:text-2xl text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-white font-extrabold mb-3 uppercase tracking-wide">${congratsType}</div>
+                <div class="text-gray-400 text-xs sm:text-sm">Selamat mempersiapkan ${textType} dan semoga dilancarkan segala prosesnya.</div>
+            `;
+
+            showModal('Pendaftaran Berhasil', successHTML, 'success', true);
+            switchView('status');
+            
+            btn.innerHTML = '<span>Kirim Pendaftaran</span> <i class="fa-solid fa-paper-plane"></i>';
+            btn.disabled = false;
+        }
+
+        function formatDate(dateStr) {
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            return new Date(dateStr).toLocaleDateString('id-ID', options);
+        }
+
+        function renderStatusTable() {
+            const tbody = document.getElementById('statusTableBody');
+            if(!tbody) return;
+            
+            if(allSubmissions.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="p-10 text-center text-gray-500">Belum ada data pendaftaran yang masuk ke sistem.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = allSubmissions.map(sub => {
+                let statusBadge = '';
+                if(sub.status === 'Terkirim') statusBadge = '<span class="bg-gray-800 text-gray-300 border border-gray-600 px-3 py-1 rounded-full text-xs font-bold tracking-wide">TERKIRIM</span>';
+                else if(sub.status === 'Diproses') statusBadge = '<span class="bg-blue-900/40 text-blue-400 border border-blue-800 px-3 py-1 rounded-full text-xs font-bold tracking-wide">DIPROSES</span>';
+                else if(sub.status === 'Selesai') statusBadge = '<span class="bg-green-900/40 text-green-400 border border-green-800 px-3 py-1 rounded-full text-xs font-bold tracking-wide">SELESAI</span>';
+
+                let actionBtns = `<button onclick="copyCaption('${sub.id}')" class="bg-[#1a1a1a] hover:bg-[#2a2a2a] text-gray-300 border border-gray-700 px-3 py-1.5 rounded-lg text-xs font-bold transition-all mb-1 sm:mb-0" title="Salin Teks Undangan"><i class="fa-regular fa-copy mr-1"></i> Caption</button>`;
+                
+                if(sub.status === 'Selesai' && sub.fileUrl) {
+                    actionBtns += `<a href="${sub.fileUrl}" target="_blank" download class="ml-0 sm:ml-2 bg-red-600 hover:bg-red-500 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition-all inline-block glow-red"><i class="fa-solid fa-download mr-1"></i> Design</a>`;
+                }
+
+                return `
+                    <tr class="hover:bg-[#150a0a] transition-colors">
+                        <td class="p-4 md:p-5">
+                            <div class="font-bold text-white text-sm md:text-base">${sub.nama}</div>
+                            <div class="text-xs text-gray-500 font-medium tracking-wider">${sub.nim}</div>
+                        </td>
+                        <td class="p-4 md:p-5"><span class="font-bold text-xs md:text-sm ${sub.jenis === 'Kolokium' ? 'text-red-400' : 'text-gray-300'}">${sub.jenis}</span></td>
+                        <td class="p-4 md:p-5 text-xs md:text-sm text-gray-300">${formatDate(sub.tanggal)}</td>
+                        <td class="p-4 md:p-5">${statusBadge}</td>
+                        <td class="p-4 md:p-5 text-center whitespace-nowrap flex flex-col sm:flex-row justify-center items-center">${actionBtns}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function copyCaption(id) {
+            const data = allSubmissions.find(s => s.id === id);
+            if(!data) return;
+
+            const tgl = formatDate(data.tanggal);
+            let text = "";
+
+            if(data.jenis === 'Kolokium') {
+                text = `🪵 [𝐔𝐍𝐃𝐀𝐍𝐆𝐀𝐍 𝐊𝐎𝐋𝐎𝐊𝐈𝐔𝐌 𝐊𝐀𝐒𝐔𝐀𝐑𝐈𝐍𝐀 𝐊𝐀𝐑𝐒𝐀] 🪵
+
+Halo Kasuarina Karsa!! 🍂
+Ibarat balok kayu yang siap diukir menjadi sebuah karya bernilai tinggi, sebuah rancangan penelitian yang kokoh telah dipersiapkan dengan matang. Langkah awal untuk menorehkan jejak inovasi dan kontribusi di bidang Teknologi Hasil Hutan sudah di depan mata! 🪚✨
+
+Oleh karena itu, kami mengundang Akang Teteh dan rekan-rekan sekalian untuk hadir serta memberikan dukungan pada Kolokium dari:
+
+👤 ${data.nama} / ${data.nim}
+📝 "${data.judul}"
+
+👨🏻‍🏫Dosen Pembimbing 1:
+${data.dosbing1}
+
+👨🏻‍🏫Dosen Pembimbing 2:
+${data.dosbing2 || '-'}
+
+👩🏻‍🏫Moderator :
+${data.moderator}
+
+📆 Hari, Tanggal : ${tgl}
+⏰ Pukul : ${data.jamMulai} - ${data.jamSelesai} WIB
+📍Tempat : ${data.ruangan}
+
+Mari bersama-sama saling menguatkan akar semangat dan memberikan masukan yang membangun agar penelitian ini tumbuh kokoh. Kehadiran Akang Teteh semuanya sangat kami nantikan. 🪵
+
+Terima kasih.
+
+Wassalamualaikum Warrahmatullahi Wabarakatuh.
+
+#KolokiumKasuarinaKarsa #TeknologiHasilHutan #Kolokium #Fahutan #Kompak #THH`;
+            } else {
+                text = `🪵[𝐔𝐍𝐃𝐀𝐍𝐆𝐀𝐍 𝐒𝐄𝐌𝐈𝐍𝐀𝐑 𝐇𝐀𝐒𝐈𝐋 𝐊𝐀𝐒𝐔𝐀𝐑𝐈𝐍𝐀 𝐊𝐀𝐑𝐒𝐀]🪵
+
+Halo Kasuarina Karsa!! 🍂
+
+Ibarat kayu gelondongan yang telah melewati panjangnya proses pemotongan, pengeringan, dan pengolahan, kini saatnya mempersembahkan produk akhir yang bernilai tinggi. Perjalanan penelitian yang mengasah dedikasi di bidang Teknologi Hasil Hutan akhirnya mencapai puncaknya! 🪚✨
+
+Oleh karena itu, kami mengundang Akang Teteh dan rekan-rekan sekalian untuk hadir serta merayakan pencapaian pada Seminar Hasil dari:
+
+👤 ${data.nama} / ${data.nim}
+📝 "${data.judul}"
+
+👨🏻‍🏫Dosen Pembimbing 1:
+${data.dosbing1}
+
+👨🏻‍🏫Dosen Pembimbing 2:
+${data.dosbing2 || '-'}
+
+👩🏻‍🏫Moderator :
+${data.moderator}
+
+📆 Hari, Tanggal : ${tgl}
+⏰ Pukul : ${data.jamMulai} - ${data.jamSelesai} WIB
+📍Tempat : ${data.ruangan}
+
+Mari hadir untuk mengapresiasi mahakarya yang telah diukir dengan kerja keras dan memetik manfaat dari keilmuan yang dipaparkan. Kehadiran Akang Teteh semuanya sangat kami nantikan. 🌳🪵
+
+Terima kasih.
+Wassalamualaikum Warrahmatullahi Wabarakatuh.
+
+#SemhasKasuarinaKarsa #TeknologiHasilHutan #SeminarHasil #Fahutan #Kompak #THH`;
+            }
+
+            const ta = document.getElementById('captionClipboard');
+            ta.value = text;
+            ta.select();
+            document.execCommand('copy');
+            showModal('Tersalin!', 'Caption undangan berhasil disalin ke clipboard.', 'info');
+        }
+
+        function loginAdmin() {
+            const user = document.getElementById('inputAdminUser').value.trim();
+            if(user === 'Lontar123') {
+                document.getElementById('inputAdminUser').value = '';
+                switchView('admin-panel');
+                fetchSubmissions();
+            } else {
+                showModal('Akses Ditolak', 'Kredensial admin tidak valid.', 'error');
+            }
+        }
+
+        function renderAdminTable() {
+            const tbody = document.getElementById('adminTableBody');
+            if(!tbody) return;
+            
+            if(allSubmissions.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="p-10 text-center text-gray-500">Database pendaftaran kosong.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = allSubmissions.map(sub => {
+                const createdDate = new Date(sub.createdAt).toLocaleDateString('id-ID', {day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit'});
+                return `
+                    <tr class="hover:bg-[#150a0a] transition-colors">
+                        <td class="p-4 text-gray-500 text-xs whitespace-nowrap align-top">${createdDate}</td>
+                        <td class="p-4 align-top">
+                            <div class="font-bold text-white">${sub.nama}</div>
+                            <div class="text-xs text-gray-400 font-medium">${sub.nim}</div>
+                        </td>
+                        <td class="p-4 align-top"><span class="font-bold text-xs ${sub.jenis === 'Kolokium' ? 'text-red-400' : 'text-gray-300'}">${sub.jenis}</span></td>
+                        <td class="p-4 align-top text-xs space-y-1">
+                            <div class="text-gray-300"><strong class="text-gray-500">P1:</strong> ${sub.dosbing1}</div>
+                            <div class="text-gray-300"><strong class="text-gray-500">P2:</strong> ${sub.dosbing2 || '-'}</div>
+                            <div class="text-gray-300"><strong class="text-gray-500">Mod:</strong> ${sub.moderator}</div>
+                        </td>
+                        <td class="p-4 align-top text-xs space-y-1">
+                            <div class="text-white font-medium">${formatDate(sub.tanggal)}</div>
+                            <div class="text-gray-400"><i class="fa-regular fa-clock mr-1"></i>${sub.jamMulai} - ${sub.jamSelesai} WIB</div>
+                            <div class="text-red-400"><i class="fa-solid fa-location-dot mr-1"></i>${sub.ruangan}</div>
+                        </td>
+                        <td class="p-4 align-top text-xs text-gray-300 max-w-xs">
+                            <p class="line-clamp-3" title="${sub.judul}">${sub.judul}</p>
+                        </td>
+                        <td class="p-4 align-top">
+                            <div class="flex flex-col gap-2 w-44">
+                                <select onchange="updateStatus('${sub.id}', this.value)" class="bg-[#050505] border border-gray-700 text-white rounded-lg px-3 py-2 text-xs outline-none focus:border-red-600 cursor-pointer">
+                                    <option value="Terkirim" ${sub.status === 'Terkirim' ? 'selected' : ''}>[1] Terkirim</option>
+                                    <option value="Diproses" ${sub.status === 'Diproses' ? 'selected' : ''}>[2] Diproses</option>
+                                    <option value="Selesai" ${sub.status === 'Selesai' ? 'selected' : ''}>[3] Selesai</option>
+                                </select>
+                                ${sub.fileUrl ? `<a href="${sub.fileUrl}" target="_blank" class="text-xs text-green-400 hover:underline mb-1"><i class="fa-solid fa-check-circle"></i> File Terunggah</a>` : ''}
+                                <input type="file" accept="image/*" onchange="uploadDesignFile('${sub.id}', this)" class="bg-[#050505] border border-gray-700 text-gray-400 rounded-lg px-2 py-1.5 text-xs outline-none focus:border-red-600 file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-[10px] file:font-bold file:bg-red-950 file:text-red-400 hover:file:bg-red-900 cursor-pointer w-full">
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        async function updateStatus(id, newStatus) {
+            await supabaseClient.from('pendaftaran_copm').update({ status: newStatus }).eq('id', id);
+            fetchSubmissions();
+        }
+
+        async function uploadDesignFile(id, inputElement) {
+            const file = inputElement.files[0];
+            if (!file) return;
+
+            const btnParent = inputElement.parentElement;
+            const loadingText = document.createElement('div');
+            loadingText.className = "text-xs text-yellow-500 mt-1";
+            loadingText.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengunggah file...';
+            btnParent.appendChild(loadingText);
+            inputElement.disabled = true;
+
+            const fileExt = file.name.split('.').pop();
+            const fileName = `${id}_${Date.now()}.${fileExt}`;
+            const filePath = `hasil_design/${fileName}`;
+
+            const { error: uploadError } = await supabaseClient.storage
+                .from('design_copm')
+                .upload(filePath, file);
+
+            if (uploadError) {
+                loadingText.remove();
+                inputElement.disabled = false;
+                showModal('Upload Gagal', 'Gagal mengunggah file. Pastikan Bucket "design_copm" sudah dibuat dan berstatus Public di Supabase.', 'error');
+                return;
+            }
+
+            const { data } = supabaseClient.storage.from('design_copm').getPublicUrl(filePath);
+            
+            await supabaseClient.from('pendaftaran_copm').update({ 
+                file_design_url: data.publicUrl,
+                status: 'Selesai'
+            }).eq('id', id);
+
+            showModal('Upload Berhasil', 'Gambar design berhasil diunggah! Status otomatis berubah menjadi Selesai.', 'success');
+            fetchSubmissions();
+        }
+
+        function exportToCSV() {
+            if(allSubmissions.length === 0) {
+                showModal('Peringatan', 'Database kosong, tidak ada yang diekspor.', 'warning');
+                return;
+            }
+
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "Tanggal Submit,NIM,Nama,Jenis,Dosbing 1,Dosbing 2,Moderator,Tanggal Pelaksanaan,Jam Mulai,Jam Selesai,Ruangan,Judul,Status,Link File\n";
+            
+            allSubmissions.forEach(row => {
+                const d = new Date(row.createdAt).toLocaleString('id-ID');
+                const cleanJudul = row.judul.replace(/,/g, " "); 
+                let rowData = `"${d}","${row.nim}","${row.nama}","${row.jenis}","${row.dosbing1}","${row.dosbing2 || ''}","${row.moderator}","${row.tanggal}","${row.jamMulai}","${row.jamSelesai}","${row.ruangan}","${cleanJudul}","${row.status}","${row.fileUrl || ''}"`;
+                csvContent += rowData + "\n";
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "Rekap_COPM_Kasuarina_Karsa.csv");
+            document.body.appendChild(link); 
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function showModal(title, bodyText, type = 'info', isHtml = false) {
+            const modal = document.getElementById('customModal');
+            const modalContent = document.getElementById('modalContent');
+            const icon = document.getElementById('modalIcon');
+            
+            document.getElementById('modalTitle').innerText = title;
+            if(isHtml) document.getElementById('modalBody').innerHTML = bodyText;
+            else document.getElementById('modalBody').innerText = bodyText;
+
+            if(type === 'success') {
+                icon.innerHTML = '<i class="fa-solid fa-check text-green-400"></i>';
+                icon.className = 'mx-auto w-16 h-16 sm:w-20 sm:h-20 bg-green-900/30 border border-green-800 rounded-full flex items-center justify-center mb-6 text-3xl sm:text-4xl shadow-[0_0_30px_rgba(74,222,128,0.2)]';
+            } else if (type === 'error') {
+                icon.innerHTML = '<i class="fa-solid fa-xmark text-red-500"></i>';
+                icon.className = 'mx-auto w-16 h-16 sm:w-20 sm:h-20 bg-red-950/50 border border-red-900 rounded-full flex items-center justify-center mb-6 text-3xl sm:text-4xl shadow-[0_0_30px_rgba(239,68,68,0.2)]';
+            } else if (type === 'warning') {
+                icon.innerHTML = '<i class="fa-solid fa-exclamation text-yellow-500"></i>';
+                icon.className = 'mx-auto w-16 h-16 sm:w-20 sm:h-20 bg-yellow-900/30 border border-yellow-800 rounded-full flex items-center justify-center mb-6 text-3xl sm:text-4xl shadow-[0_0_30px_rgba(234,179,8,0.1)]';
+            } else {
+                icon.innerHTML = '<i class="fa-solid fa-info text-blue-400"></i>';
+                icon.className = 'mx-auto w-16 h-16 sm:w-20 sm:h-20 bg-blue-900/30 border border-blue-800 rounded-full flex items-center justify-center mb-6 text-3xl sm:text-4xl shadow-[0_0_30px_rgba(96,165,250,0.1)]';
+            }
+
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modalContent.classList.remove('scale-95');
+                modalContent.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('customModal');
+            const modalContent = document.getElementById('modalContent');
+            
+            modal.classList.add('opacity-0');
+            modalContent.classList.remove('scale-100');
+            modalContent.classList.add('scale-95');
+            
+            setTimeout(() => { modal.classList.add('hidden'); }, 300);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            fetchSubmissions();
+        });
+    </script>
+</body>
+</html>
