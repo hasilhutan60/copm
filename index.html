@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>COPM Kasuarina Karsa</title>
+    <!-- Tailwind & Supabase Libraries -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -11,7 +12,7 @@
     <style>
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
-            background-color: #050505;
+            background-color: #050505; /* Tema Sangat Gelap */
             color: #ffffff;
         }
         .fade-in { animation: fadeIn 0.4s ease-out forwards; }
@@ -27,6 +28,7 @@
 
         .glow-red { box-shadow: 0 0 20px rgba(220, 38, 38, 0.4); }
         
+        /* Auto-fill fix untuk tema gelap */
         input:-webkit-autofill,
         input:-webkit-autofill:hover, 
         input:-webkit-autofill:focus, 
@@ -41,6 +43,7 @@
     <!-- Header / Navbar -->
     <header class="py-5 px-4 md:px-8 max-w-7xl mx-auto w-full flex justify-between items-center z-40 relative">
         <div class="flex items-center gap-3 cursor-pointer" onclick="switchView('home')">
+            <!-- Logo Kasuarina Karsa -->
             <img src="https://i.ibb.co/TB5tGWd5/Whats-App-Image-2026-10-27-at-00-16-51.jpg" alt="Logo Kasuarina Karsa" class="w-11 h-11 md:w-12 md:h-12 rounded-full object-cover shadow-lg shadow-red-600/20 border border-red-900/30">
             <div>
                 <h1 class="text-base md:text-xl font-extrabold text-white tracking-wide leading-tight">KASUARINA <span class="text-red-600">KARSA</span></h1>
@@ -62,7 +65,7 @@
         </nav>
 
         <!-- Mobile Menu Toggle Button -->
-        <button class="md:hidden text-white bg-[#111111] border border-red-900/30 p-2.5 rounded-xl text-lg focus:outline-none" onclick="toggleMobileMenu()">
+        <button class="md:hidden text-white bg-[#111111] border border-red-900/30 p-2.5 rounded-xl text-lg focus:outline-none transition-all" onclick="toggleMobileMenu()">
             <i class="fa-solid fa-bars" id="mobileMenuIcon"></i>
         </button>
     </header>
@@ -81,19 +84,18 @@
     </div>
 
     <!-- Main Content Area -->
-    <main class="flex-grow p-4 md:p-8 max-w-7xl mx-auto w-full flex flex-col justify-center">
+    <main class="flex-grow p-4 md:p-8 max-w-7xl mx-auto w-full flex flex-col justify-center relative">
         
         <!-- ================= VIEW: HOME (HERO SECTION) ================= -->
         <div id="view-home" class="fade-in w-full">
             <div class="bg-gradient-to-b from-[#111111] to-[#0a0a0a] rounded-[2rem] border border-red-900/30 shadow-[0_0_50px_rgba(220,38,38,0.05)] p-6 sm:p-10 md:p-16 lg:p-24 flex flex-col items-center text-center relative overflow-hidden">
-                
                 <!-- Background Glow -->
                 <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-[200px] bg-red-600/10 blur-[100px] rounded-full pointer-events-none"></div>
 
                 <!-- Top Pill Badge -->
                 <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-red-800/50 bg-[#1a0a0a] text-red-400 text-xs font-bold tracking-wider mb-6 md:mb-8 uppercase z-10">
                     <div class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
-                    Portal COPM Resmi 2026
+                    Sistem Pendataan COPM Resmi
                 </div>
 
                 <h2 class="text-3xl sm:text-4xl md:text-6xl font-extrabold text-white mb-4 md:mb-6 tracking-tight z-10">
@@ -102,14 +104,15 @@
                 </h2>
 
                 <p class="text-gray-400 text-xs sm:text-sm md:text-base max-w-3xl leading-relaxed mb-8 md:mb-10 z-10">
-                    <strong class="text-white">COPM Pengajuan Design</strong> disediakan khusus untuk mahasiswa yang akan melaksanakan ujian. 
-                    Perhatian: COPM wajib diisi maksimal <strong class="text-red-500">3 hari (H-3)</strong> sebelum tanggal pelaksanaan. 
-                    Siapkan foto terbaik Anda dan pastikan seluruh identitas yang dimasukkan sudah benar dan sesuai.
+                    <strong>COPM Pengajuan Design</strong> disediakan khusus untuk pendataan informasi 
+                    Kolokium dan Seminar Hasil. Perhatian: Pengajuan wajib dilakukan maksimal 
+                    <strong class="text-red-500">3 hari (H-3)</strong> sebelum tanggal pelaksanaan. 
+                    Siapkan pas foto terbaik Anda dan pastikan seluruh identitas diisi dengan benar.
                 </p>
 
                 <!-- Dual Action Buttons -->
                 <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto z-10">
-                    <button onclick="startRegistration('Kolokium')" class="bg-red-600 hover:bg-red-500 text-white rounded-full px-8 py-3.5 font-bold transition-all glow-red flex items-center justify-center gap-2 text-sm md:text-base">
+                    <button onclick="startRegistration('Kolokium')" class="bg-red-600 hover:bg-red-500 text-white rounded-full px-8 py-3.5 font-bold transition-all glow-red flex items-center justify-center gap-2 text-sm md:text-base shadow-lg">
                         Daftar Kolokium <i class="fa-solid fa-arrow-right"></i>
                     </button>
                     <button onclick="startRegistration('Seminar Hasil')" class="bg-[#111111] border border-red-600/50 hover:bg-red-950/30 text-white rounded-full px-8 py-3.5 font-bold transition-all flex items-center justify-center gap-2 text-sm md:text-base">
@@ -121,7 +124,7 @@
 
         <!-- ================= VIEW: NIM VALIDATION ================= -->
         <div id="view-nim" class="hidden fade-in max-w-md mx-auto w-full mt-6 md:mt-10">
-            <div class="bg-[#111111] p-6 sm:p-8 rounded-3xl shadow-2xl border border-red-900/30 text-center relative overflow-hidden">
+            <div class="bg-[#111111] p-6 sm:p-8 rounded-[2rem] shadow-2xl border border-red-900/30 text-center relative overflow-hidden">
                 <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-600 to-red-900"></div>
                 
                 <button onclick="switchView('home')" class="text-sm text-gray-400 hover:text-white mb-6 flex items-center gap-2 transition-colors">
@@ -133,10 +136,10 @@
                 
                 <div class="text-left mb-6">
                     <label class="block text-sm font-semibold text-gray-300 mb-2">NIM Mahasiswa</label>
-                    <input type="text" id="inputNim" class="w-full bg-[#050505] border border-red-900/50 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-600 focus:border-red-600 outline-none uppercase transition-all" placeholder="Masukan NIM">
+                    <input type="text" id="inputNim" class="w-full bg-[#050505] border border-red-900/50 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-600 focus:border-red-600 outline-none uppercase transition-all" placeholder="Masukan NIM Anda">
                 </div>
                 
-                <button onclick="validateNim()" class="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-3.5 rounded-xl transition-all shadow-lg shadow-red-600/20">
+                <button id="btnVerifikasiNim" onclick="validateNim()" class="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-3.5 rounded-xl transition-all shadow-lg shadow-red-600/20 flex justify-center items-center gap-2">
                     Verifikasi NIM
                 </button>
             </div>
@@ -154,6 +157,7 @@
                 </div>
 
                 <form id="mainForm" onsubmit="submitForm(event)" class="space-y-5 md:space-y-6">
+                    <!-- Biodata (Auto) -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
                         <div>
                             <label class="block text-sm font-semibold text-gray-300 mb-2">NIM</label>
@@ -165,13 +169,14 @@
                         </div>
                     </div>
 
+                    <!-- Dosen Section -->
                     <div class="space-y-4 pt-4 border-t border-gray-800">
                         <div>
                             <label class="block text-sm font-semibold text-gray-300 mb-2">Dosen Pembimbing 1 (Wajib) <span class="text-red-500">*</span></label>
                             <input type="text" id="f_dosbing1" required class="w-full bg-[#050505] border border-red-900/50 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-600 outline-none transition-all text-sm" placeholder="Nama beserta gelar lengkap">
                         </div>
                         <div>
-                            <label class="block text-sm font-semibold text-gray-300 mb-2">Dosen Pembimbing 2 (Jika tidak ada beri "-"))</label>
+                            <label class="block text-sm font-semibold text-gray-300 mb-2">Dosen Pembimbing 2 (Jika tidak ada beri "-")</label>
                             <input type="text" id="f_dosbing2" class="w-full bg-[#050505] border border-gray-800 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-600 outline-none transition-all text-sm" placeholder="Nama beserta gelar lengkap">
                         </div>
                         <div>
@@ -180,11 +185,12 @@
                         </div>
                     </div>
 
+                    <!-- Pelaksanaan Section -->
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 pt-4 border-t border-gray-800">
                         <div>
                             <label class="block text-sm font-semibold text-gray-300 mb-2">Tanggal Pelaksanaan <span class="text-red-500">*</span></label>
                             <input type="date" id="f_tanggal" required onchange="checkDate()" class="w-full bg-[#050505] border border-red-900/50 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-600 outline-none transition-all [color-scheme:dark] text-sm">
-                            <p class="text-xs text-red-500 mt-2 font-medium hidden" id="dateError"><i class="fa-solid fa-circle-exclamation"></i> Maksimal H-3 sebelum pelaksanaan.</p>
+                            <p class="text-xs text-red-500 mt-2 font-medium hidden" id="dateError"><i class="fa-solid fa-circle-exclamation"></i> Maksimal mengisi adalah H-3.</p>
                         </div>
                         <div>
                             <label class="block text-sm font-semibold text-gray-300 mb-2">Jam Mulai <span class="text-red-500">*</span></label>
@@ -196,19 +202,20 @@
                         </div>
                     </div>
 
+                    <!-- Room & Upload Section -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 pt-4">
                         <div>
-                            <label class="block text-sm font-semibold text-gray-300 mb-2">Ruangan <span class="text-red-500">*</span></label>
-                            <select id="f_ruangan" required onchange="toggleRuanganManual()" class="w-full bg-[#050505] border border-red-900/50 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-600 outline-none transition-all text-sm">
+                            <label class="block text-sm font-semibold text-gray-300 mb-2">Ruangan / Tempat <span class="text-red-500">*</span></label>
+                            <select id="f_ruangan" required onchange="toggleRuanganManual()" class="w-full bg-[#050505] border border-red-900/50 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-600 outline-none transition-all text-sm cursor-pointer">
                                 <option value="" disabled selected>Pilih Ruangan...</option>
                                 <option value="ABT 1">ABT 1</option>
                                 <option value="ABT 2">ABT 2</option>
                                 <option value="Lainnya">Lainnya...</option>
                             </select>
-                            <input type="text" id="f_ruangan_manual" class="hidden w-full bg-[#050505] border border-red-900/50 text-white rounded-xl px-4 py-3 mt-3 focus:ring-2 focus:ring-red-600 outline-none transition-all text-sm" placeholder="Sebutkan Ruangan / Link Zoom">
+                            <input type="text" id="f_ruangan_manual" class="hidden w-full bg-[#050505] border border-red-900/50 text-white rounded-xl px-4 py-3 mt-3 focus:ring-2 focus:ring-red-600 outline-none transition-all text-sm" placeholder="Ketik Nama Ruangan / Link Zoom">
                         </div>
                         <div>
-                            <label class="block text-sm font-semibold text-gray-300 mb-2">Upload Pas Foto <span class="text-red-500">*</span></label>
+                            <label class="block text-sm font-semibold text-gray-300 mb-2">Upload Pas Foto Anda <span class="text-red-500">*</span></label>
                             <input type="file" id="f_foto" required accept="image/*" class="w-full bg-[#050505] border border-gray-800 text-gray-400 rounded-xl px-3 py-2 outline-none file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-red-950 file:text-red-400 hover:file:bg-red-900 transition-all cursor-pointer text-sm">
                         </div>
                     </div>
@@ -218,6 +225,7 @@
                         <textarea id="f_judul" required rows="3" class="w-full bg-[#050505] border border-red-900/50 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-600 outline-none transition-all resize-none text-sm" placeholder="Tuliskan judul penelitian Anda dengan lengkap..."></textarea>
                     </div>
 
+                    <!-- Submission Actions -->
                     <div class="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-800">
                         <button type="button" onclick="switchView('home')" class="w-full sm:w-1/3 bg-[#1a1a1a] hover:bg-[#2a2a2a] border border-gray-700 text-white font-bold py-3.5 rounded-xl transition-all text-sm">Batal</button>
                         <button type="submit" id="btnSubmit" class="w-full sm:w-2/3 bg-red-600 hover:bg-red-500 text-white font-bold py-3.5 rounded-xl transition-all glow-red flex justify-center items-center gap-2 text-sm">
@@ -253,7 +261,7 @@
                             </tr>
                         </thead>
                         <tbody id="statusTableBody" class="divide-y divide-gray-800/50 bg-[#0b0404] text-sm">
-                            <tr><td colspan="5" class="p-10 text-center text-gray-500"><i class="fa-solid fa-spinner fa-spin mr-2"></i>Memuat data sistem...</td></tr>
+                            <!-- Populated via Javascript -->
                         </tbody>
                     </table>
                 </div>
@@ -273,8 +281,8 @@
                     <label class="block text-sm font-semibold text-gray-300 mb-2">Username Kredensial</label>
                     <input type="password" id="inputAdminUser" class="w-full bg-[#050505] border border-gray-700 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-600 outline-none transition-all text-sm" placeholder="••••••••">
                 </div>
-                <button onclick="loginAdmin()" class="w-full bg-white hover:bg-gray-200 text-black font-extrabold py-3.5 rounded-xl transition-all shadow-lg text-sm">
-                    Otorisasi <i class="fa-solid fa-lock-open ml-2"></i>
+                <button onclick="loginAdmin()" class="w-full bg-white hover:bg-gray-200 text-black font-extrabold py-3.5 rounded-xl transition-all shadow-lg text-sm flex justify-center items-center gap-2">
+                    Otorisasi <i class="fa-solid fa-lock-open"></i>
                 </button>
             </div>
         </div>
@@ -285,7 +293,7 @@
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 md:mb-8 border-b border-gray-800 pb-6 gap-3">
                     <div>
                         <h2 class="text-xl sm:text-2xl font-extrabold text-white">Console Admin</h2>
-                        <p class="text-xs sm:text-sm text-gray-400 mt-1">Kelola data, detail pendaftaran, dan unggah hasil design.</p>
+                        <p class="text-xs sm:text-sm text-gray-400 mt-1">Kelola data, unduh foto, dan unggah hasil design.</p>
                     </div>
                     <div class="flex flex-wrap gap-3">
                         <button onclick="exportToCSV()" class="bg-green-700 hover:bg-green-600 text-white px-4 md:px-5 py-2.5 rounded-xl font-bold transition-all shadow-lg flex items-center gap-2 text-xs md:text-sm">
@@ -298,7 +306,7 @@
                 </div>
 
                 <div class="overflow-x-auto rounded-xl border border-gray-800">
-                    <table class="w-full text-left border-collapse min-w-[1050px]">
+                    <table class="w-full text-left border-collapse min-w-[1100px]">
                         <thead>
                             <tr class="bg-[#1a0a0a] text-gray-300 border-b border-gray-800 text-xs md:text-sm uppercase tracking-wide">
                                 <th class="p-4 font-semibold">Tgl Submit</th>
@@ -307,20 +315,19 @@
                                 <th class="p-4 font-semibold">Dosen & Moderator</th>
                                 <th class="p-4 font-semibold">Pelaksanaan & Tempat</th>
                                 <th class="p-4 font-semibold">Judul Skripsi</th>
-                                <th class="p-4 font-semibold">Status & File</th>
+                                <th class="p-4 font-semibold text-center">Status & File</th>
                             </tr>
                         </thead>
                         <tbody id="adminTableBody" class="divide-y divide-gray-800/50 bg-[#0b0404] text-sm">
-                            <!-- Admin data populated by JS -->
+                            <!-- Populated via Javascript -->
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
-
     </main>
 
-    <!-- Custom Modal -->
+    <!-- Modal Notifikasi (Pop-Up) -->
     <div id="customModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300 p-4">
         <div class="bg-[#111111] border border-red-900/50 rounded-[2rem] p-6 sm:p-8 max-w-sm w-full mx-auto shadow-2xl transform scale-95 transition-transform duration-300 text-center" id="modalContent">
             <div id="modalIcon" class="mx-auto w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center mb-6 text-3xl sm:text-4xl shadow-inner"></div>
@@ -330,52 +337,110 @@
         </div>
     </div>
 
-    <!-- Hidden Clipboard Container -->
-    <textarea id="captionClipboard" class="absolute left-[-9999px]"></textarea>
+    <!-- Hidden Textarea for Copy To Clipboard Fallback -->
+    <textarea id="captionClipboard" class="absolute left-[-9999px] top-[-9999px]"></textarea>
 
+    <!-- Core Logic Application -->
     <script>
         // === INISIALISASI SUPABASE KASUARINA KARSA ===
         const supabaseUrl = 'https://oqrwdkvqtjmfpouycaes.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9xcndka3ZxdGptZnBvdXljYWVzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMwMjc3OTQsImV4cCI6MjEwODYwMzc5NH0.tngp9VjkPR5PNhWWWL14Zj9lCdt19Ryw3b6M4WQx2DU';
-        const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+        
+        let supabaseClient = null;
+        try {
+            if (window.supabase) {
+                supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+            } else {
+                console.error("Library Supabase gagal dimuat dari CDN.");
+            }
+        } catch (initErr) {
+            console.error("Kesalahan inisialisasi Supabase:", initErr);
+        }
 
+        // Webhook URL untuk Notifikasi Email (Google Apps Script)
+        const APPS_SCRIPT_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbxrC5pOemixwwqrHnHeF3j4tM5y7Ul3xax6t9UEUgBpoUs1A5cMph4QxbH5WUOzoVIc4g/exec';
+
+        // State Variabel
         let currentType = '';
         let allSubmissions = [];
+        let currentUserEmail = ''; 
 
+        // Fungsi Menu Mobile
         function toggleMobileMenu() {
             const menu = document.getElementById('mobileMenu');
-            menu.classList.toggle('hidden');
+            const icon = document.getElementById('mobileMenuIcon');
+            
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-xmark');
+            } else {
+                menu.classList.add('hidden');
+                icon.classList.remove('fa-xmark');
+                icon.classList.add('fa-bars');
+            }
+        }
+
+        // Penanganan format tanggal agar tidak terjadi Error (RangeError)
+        function formatDate(dateStr) {
+            if (!dateStr) return '-';
+            try {
+                const d = new Date(dateStr);
+                if (isNaN(d.getTime())) return dateStr; // fallback to original
+                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                return d.toLocaleDateString('id-ID', options);
+            } catch (e) {
+                return dateStr;
+            }
         }
 
         async function fetchSubmissions() {
-            const { data, error } = await supabaseClient
-                .from('pendaftaran_copm')
-                .select('*')
-                .order('created_at', { ascending: false });
-            
-            if(data) {
-                allSubmissions = data.map(row => ({
-                    id: row.id,
-                    nim: row.nim,
-                    nama: row.nama,
-                    jenis: row.jenis_pendaftaran,
-                    dosbing1: row.dosen_pembimbing_1,
-                    dosbing2: row.dosen_pembimbing_2,
-                    moderator: row.dosen_moderator,
-                    tanggal: row.tanggal_pelaksanaan,
-                    jamMulai: row.jam_mulai,
-                    jamSelesai: row.jam_selesai,
-                    ruangan: row.ruangan,
-                    judul: row.judul_skripsi,
-                    status: row.status,
-                    fileUrl: row.file_design_url,
-                    createdAt: row.created_at
-                }));
-                renderStatusTable();
-                const adminPanel = document.getElementById('view-admin-panel');
-                if(adminPanel && !adminPanel.classList.contains('hidden')) {
-                    renderAdminTable();
+            if (!supabaseClient) return;
+            try {
+                const { data, error } = await supabaseClient
+                    .from('pendaftaran_copm')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+                
+                if (error) {
+                    console.error("Gagal membaca database:", error);
+                    const errMsg = `<i class="fa-solid fa-triangle-exclamation mr-2"></i>Akses Ditolak: ${error.message}`;
+                    const tbody = document.getElementById('statusTableBody');
+                    if (tbody) tbody.innerHTML = `<tr><td colspan="5" class="p-10 text-center text-red-500 font-bold bg-red-950/20">${errMsg}</td></tr>`;
+                    
+                    const adminTbody = document.getElementById('adminTableBody');
+                    if (adminTbody) adminTbody.innerHTML = `<tr><td colspan="7" class="p-10 text-center text-red-500 font-bold bg-red-950/20">${errMsg}</td></tr>`;
+                    return;
                 }
+                
+                if (data) {
+                    allSubmissions = data.map(row => ({
+                        id: row.id,
+                        nim: row.nim,
+                        nama: row.nama,
+                        jenis: row.jenis_pendaftaran,
+                        dosbing1: row.dosen_pembimbing_1,
+                        dosbing2: row.dosen_pembimbing_2,
+                        moderator: row.dosen_moderator,
+                        tanggal: row.tanggal_pelaksanaan,
+                        jamMulai: row.jam_mulai,
+                        jamSelesai: row.jam_selesai,
+                        ruangan: row.ruangan,
+                        judul: row.judul_skripsi,
+                        fotoUrl: row.foto_url,
+                        status: row.status,
+                        fileUrl: row.file_design_url,
+                        createdAt: row.created_at
+                    }));
+                    renderStatusTable();
+                    
+                    const adminPanel = document.getElementById('view-admin-panel');
+                    if(adminPanel && !adminPanel.classList.contains('hidden')) {
+                        renderAdminTable();
+                    }
+                }
+            } catch (err) {
+                console.error("Kesalahan jaringan:", err);
             }
         }
 
@@ -389,9 +454,7 @@
             else if(viewId === 'status') activeBtn = document.getElementById('nav-status');
             else if(viewId === 'admin-login' || viewId === 'admin-panel') activeBtn = document.getElementById('nav-admin');
 
-            if(activeBtn) {
-                activeBtn.className = 'nav-btn px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300 flex items-center gap-2 bg-red-600 text-white';
-            }
+            if(activeBtn) activeBtn.className = 'nav-btn px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300 flex items-center gap-2 bg-red-600 text-white';
         }
 
         function switchView(viewId) {
@@ -417,43 +480,65 @@
         }
 
         async function validateNim() {
+            if (!supabaseClient) {
+                showModal('Kesalahan Fatal', 'Koneksi ke Database gagal dibuat.', 'error');
+                return;
+            }
+
             const nimInput = document.getElementById('inputNim').value.trim().toUpperCase();
             if(!nimInput) {
                 showModal('Validasi Gagal', 'NIM tidak boleh kosong!', 'warning');
                 return;
             }
             
-            const btn = document.querySelector('#view-nim button');
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memeriksa Server...';
+            const btn = document.getElementById('btnVerifikasiNim');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memeriksa...';
+            btn.disabled = true;
             
-            const { data, error } = await supabaseClient
-                .from('mahasiswa')
-                .select('nama_lengkap')
-                .eq('nim', nimInput)
-                .single();
+            try {
+                const { data, error } = await supabaseClient
+                    .from('mahasiswa')
+                    .select('nama_lengkap, email')
+                    .eq('nim', nimInput)
+                    .single();
+                    
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+
+                if (error || !data) {
+                    if (error && error.code === 'PGRST116') {
+                        showModal('NIM Tidak Terdaftar', `NIM ${nimInput} tidak ditemukan dalam sistem kami.`, 'error');
+                    } else {
+                        const errMsg = error ? error.message : 'Data kosong';
+                        showModal('Sistem Ditolak', `Pesan Database: ${errMsg}\nPastikan SQL Supabase dan Kolom Email sudah terpasang.`, 'warning');
+                    }
+                    return;
+                }
+
+                currentUserEmail = data.email || '';
                 
-            btn.innerHTML = 'Verifikasi NIM';
-
-            if (error || !data) {
-                showModal('NIM Tidak Terdaftar', `NIM ${nimInput} tidak ditemukan dalam database sistem. Pastikan Anda memasukkan NIM dengan benar.`, 'error');
-                return;
+                document.getElementById('formTitle').innerText = `Formulir ${currentType}`;
+                document.getElementById('formBadge').innerText = currentType;
+                document.getElementById('mainForm').reset();
+                document.getElementById('f_ruangan_manual').classList.add('hidden');
+                document.getElementById('dateError').classList.add('hidden');
+                
+                document.getElementById('f_nim').value = nimInput;
+                document.getElementById('f_nama').value = data.nama_lengkap;
+                document.getElementById('f_nama').readOnly = true;
+                document.getElementById('f_nama').classList.add('text-gray-500');
+                
+                switchView('form');
+            } catch (err) {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                console.error("Exception in validateNim:", err);
+                showModal('Kesalahan Sistem', `Terjadi kesalahan saat memproses data: ${err.message}`, 'error');
             }
-
-            let nama = data.nama_lengkap;
-            
-            document.getElementById('formTitle').innerText = `Formulir ${currentType}`;
-            document.getElementById('formBadge').innerText = currentType;
-            document.getElementById('mainForm').reset();
-            document.getElementById('f_ruangan_manual').classList.add('hidden');
-            
-            document.getElementById('f_nim').value = nimInput;
-            document.getElementById('f_nama').value = nama;
-            document.getElementById('f_nama').readOnly = true;
-            document.getElementById('f_nama').classList.add('text-gray-500');
-            
-            switchView('form');
         }
 
+        // Perbaikan validasi tanggal (parsing lokal ke UTC dengan aman)
         function checkDate() {
             const dateInput = document.getElementById('f_tanggal');
             const errorMsg = document.getElementById('dateError');
@@ -461,8 +546,10 @@
             
             if(!dateInput.value) return;
 
-            const selectedDate = new Date(dateInput.value);
+            const [year, month, day] = dateInput.value.split('-');
+            const selectedDate = new Date(year, month - 1, day);
             selectedDate.setHours(0,0,0,0);
+            
             const today = new Date();
             today.setHours(0,0,0,0);
 
@@ -474,7 +561,7 @@
                 btnSubmit.disabled = true;
                 btnSubmit.classList.add('opacity-50', 'cursor-not-allowed');
                 btnSubmit.classList.remove('glow-red', 'hover:bg-red-500');
-                showModal('Peringatan Sistem', 'Maksimal mengisi COPM Design adalah 3 hari (H-3) sebelum tanggal pelaksanaan.', 'warning');
+                showModal('Peringatan Sistem', 'Pengajuan COPM wajib dilakukan minimal 3 hari (H-3) sebelum tanggal pelaksanaan.', 'warning');
                 dateInput.value = '';
             } else {
                 errorMsg.classList.add('hidden');
@@ -499,59 +586,100 @@
         async function submitForm(e) {
             e.preventDefault();
 
-            const btn = document.getElementById('btnSubmit');
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengirim Data...';
-            btn.disabled = true;
-
-            const ruanganVal = document.getElementById('f_ruangan').value;
-            const finalRuangan = ruanganVal === 'Lainnya' ? document.getElementById('f_ruangan_manual').value : ruanganVal;
-
-            const submitData = {
-                nim: document.getElementById('f_nim').value,
-                nama: document.getElementById('f_nama').value,
-                jenis_pendaftaran: currentType,
-                dosen_pembimbing_1: document.getElementById('f_dosbing1').value,
-                dosen_pembimbing_2: document.getElementById('f_dosbing2').value || null,
-                dosen_moderator: document.getElementById('f_moderator').value,
-                tanggal_pelaksanaan: document.getElementById('f_tanggal').value,
-                jam_mulai: document.getElementById('f_jamMulai').value,
-                jam_selesai: document.getElementById('f_jamSelesai').value,
-                ruangan: finalRuangan,
-                judul_skripsi: document.getElementById('f_judul').value,
-                status: 'Terkirim'
-            };
-
-            const { error } = await supabaseClient.from('pendaftaran_copm').insert([submitData]);
-
-            if (error) {
-                console.error(error);
-                showModal('Gagal Terkirim', 'Terjadi kesalahan sistem saat menghubungi server Supabase.', 'error');
-                btn.innerHTML = '<span>Kirim Pendaftaran</span> <i class="fa-solid fa-paper-plane"></i>';
-                btn.disabled = false;
+            if (!supabaseClient) {
+                showModal('Error', 'Koneksi ke server terputus.', 'error');
                 return;
             }
 
-            await fetchSubmissions();
-            
-            const congratsType = currentType === 'Kolokium' ? 'Selamat Kolokium!' : 'Selamat Seminar Hasil!';
-            const textType = currentType === 'Kolokium' ? 'Kolokium' : 'Seminar Hasil';
-            
-            const successHTML = `
-                <div class="mb-5 text-gray-300">Data COPM Design Anda telah berhasil terekam sistem.</div>
-                <div class="text-xl sm:text-2xl text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-white font-extrabold mb-3 uppercase tracking-wide">${congratsType}</div>
-                <div class="text-gray-400 text-xs sm:text-sm">Selamat mempersiapkan ${textType} dan semoga dilancarkan segala prosesnya.</div>
-            `;
+            const btn = document.getElementById('btnSubmit');
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memproses Data...';
+            btn.disabled = true;
 
-            showModal('Pendaftaran Berhasil', successHTML, 'success', true);
-            switchView('status');
-            
-            btn.innerHTML = '<span>Kirim Pendaftaran</span> <i class="fa-solid fa-paper-plane"></i>';
-            btn.disabled = false;
-        }
+            try {
+                const ruanganVal = document.getElementById('f_ruangan').value;
+                const finalRuangan = ruanganVal === 'Lainnya' ? document.getElementById('f_ruangan_manual').value : ruanganVal;
 
-        function formatDate(dateStr) {
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            return new Date(dateStr).toLocaleDateString('id-ID', options);
+                // Upload Foto
+                const fileInput = document.getElementById('f_foto');
+                const file = fileInput.files[0];
+                let uploadedFotoUrl = null;
+
+                if (file) {
+                    const fileExt = file.name.split('.').pop();
+                    const cleanNim = document.getElementById('f_nim').value.replace(/[^a-zA-Z0-9]/g, '');
+                    const fileName = `pas_foto_${cleanNim}_${Date.now()}.${fileExt}`;
+                    const filePath = `pas_foto/${fileName}`;
+
+                    const { error: uploadError } = await supabaseClient.storage
+                        .from('design_copm')
+                        .upload(filePath, file);
+
+                    if (!uploadError) {
+                        const { data: urlData } = supabaseClient.storage.from('design_copm').getPublicUrl(filePath);
+                        uploadedFotoUrl = urlData.publicUrl;
+                    } else {
+                        throw new Error(`Gagal upload foto: ${uploadError.message}. (Pastikan Bucket design_copm berstatus Public)`);
+                    }
+                }
+
+                const submitData = {
+                    nim: document.getElementById('f_nim').value,
+                    nama: document.getElementById('f_nama').value,
+                    jenis_pendaftaran: currentType,
+                    dosen_pembimbing_1: document.getElementById('f_dosbing1').value,
+                    dosen_pembimbing_2: document.getElementById('f_dosbing2').value || null,
+                    dosen_moderator: document.getElementById('f_moderator').value,
+                    tanggal_pelaksanaan: document.getElementById('f_tanggal').value,
+                    jam_mulai: document.getElementById('f_jamMulai').value,
+                    jam_selesai: document.getElementById('f_jamSelesai').value,
+                    ruangan: finalRuangan,
+                    judul_skripsi: document.getElementById('f_judul').value,
+                    foto_url: uploadedFotoUrl,
+                    status: 'Terkirim'
+                };
+
+                const { error: insertError } = await supabaseClient.from('pendaftaran_copm').insert([submitData]);
+
+                if (insertError) {
+                    throw new Error(`Gagal menyimpan data: ${insertError.message}`);
+                }
+
+                // Kirim Webhook ke Apps Script
+                fetch(APPS_SCRIPT_WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({
+                        nama: submitData.nama,
+                        nim: submitData.nim,
+                        jenis: submitData.jenis_pendaftaran,
+                        tanggal: formatDate(submitData.tanggal_pelaksanaan),
+                        judul: submitData.judul_skripsi,
+                        userEmail: currentUserEmail
+                    })
+                }).catch(err => console.error("Webhook Email gagal:", err));
+
+                await fetchSubmissions();
+                
+                const congratsType = currentType === 'Kolokium' ? 'Selamat Kolokium!' : 'Selamat Seminar Hasil!';
+                const textType = currentType === 'Kolokium' ? 'Kolokium' : 'Seminar Hasil';
+                
+                const successHTML = `
+                    <div class="mb-5 text-gray-300">Data COPM Design Anda telah berhasil terekam sistem.</div>
+                    <div class="text-xl sm:text-2xl text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-white font-extrabold mb-3 uppercase tracking-wide">${congratsType}</div>
+                    <div class="text-gray-400 text-xs sm:text-sm">Selamat mempersiapkan ${textType} dan semoga dilancarkan segala prosesnya.</div>
+                `;
+
+                showModal('Pendaftaran Berhasil', successHTML, 'success', true);
+                switchView('status');
+                
+            } catch (err) {
+                console.error("Submit Exception:", err);
+                showModal('Proses Dihentikan', err.message, 'error');
+            } finally {
+                btn.innerHTML = originalHTML;
+                btn.disabled = false;
+            }
         }
 
         function renderStatusTable() {
@@ -572,11 +700,11 @@
                 let actionBtns = `<button onclick="copyCaption('${sub.id}')" class="bg-[#1a1a1a] hover:bg-[#2a2a2a] text-gray-300 border border-gray-700 px-3 py-1.5 rounded-lg text-xs font-bold transition-all mb-1 sm:mb-0" title="Salin Teks Undangan"><i class="fa-regular fa-copy mr-1"></i> Caption</button>`;
                 
                 if(sub.status === 'Selesai' && sub.fileUrl) {
-                    actionBtns += `<a href="${sub.fileUrl}" target="_blank" download class="ml-0 sm:ml-2 bg-red-600 hover:bg-red-500 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition-all inline-block glow-red"><i class="fa-solid fa-download mr-1"></i> Design</a>`;
+                    actionBtns += `<a href="${sub.fileUrl}?download=" target="_blank" class="ml-0 sm:ml-2 bg-red-600 hover:bg-red-500 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition-all inline-block glow-red"><i class="fa-solid fa-download mr-1"></i> Design</a>`;
                 }
 
                 return `
-                    <tr class="hover:bg-[#150a0a] transition-colors">
+                    <tr class="hover:bg-[#150a0a] transition-colors border-b border-gray-800/30">
                         <td class="p-4 md:p-5">
                             <div class="font-bold text-white text-sm md:text-base">${sub.nama}</div>
                             <div class="text-xs text-gray-500 font-medium tracking-wider">${sub.nim}</div>
@@ -590,7 +718,8 @@
             }).join('');
         }
 
-        function copyCaption(id) {
+        // Perbaikan mekanisme Clipboard yang aman dari Sandbox Blocking
+        async function copyCaption(id) {
             const data = allSubmissions.find(s => s.id === id);
             if(!data) return;
 
@@ -598,69 +727,32 @@
             let text = "";
 
             if(data.jenis === 'Kolokium') {
-                text = `🪵 [𝐔𝐍𝐃𝐀𝐍𝐆𝐀𝐍 𝐊𝐎𝐋𝐎𝐊𝐈𝐔𝐌 𝐊𝐀𝐒𝐔𝐀𝐑𝐈𝐍𝐀 𝐊𝐀𝐑𝐒𝐀] 🪵
-
-Halo Kasuarina Karsa!! 🍂
-Ibarat balok kayu yang siap diukir menjadi sebuah karya bernilai tinggi, sebuah rancangan penelitian yang kokoh telah dipersiapkan dengan matang. Langkah awal untuk menorehkan jejak inovasi dan kontribusi di bidang Teknologi Hasil Hutan sudah di depan mata!
-
-Oleh karena itu, kami mengundang Akang Teteh dan rekan-rekan sekalian untuk hadir serta memberikan dukungan pada Kolokium dari:
-
-👤 ${data.nama} / ${data.nim}
-📝 "${data.judul}"
-
-👨🏻‍🏫Dosen Pembimbing Utama:
-${data.dosbing1}
-👨🏻‍🏫Dosen Pembimbing Anggota:
-${data.dosbing2 || '-'}
-👩🏻‍🏫Dosen Moderator :
-${data.moderator}
-
-📆 Hari, Tanggal : ${tgl}
-⏰ Pukul : ${data.jamMulai} - ${data.jamSelesai} WIB
-📍Tempat : ${data.ruangan}
-
-Mari bersama-sama saling menguatkan akar semangat dan memberikan masukan yang membangun agar penelitian ini tumbuh kokoh. Kehadiran Akang Teteh semuanya sangat kami nantikan. 
-
-Terima kasih.
-Wassalamualaikum Warrahmatullahi Wabarakatuh.
-
-#KolokiumKasuarinaKarsa #TeknologiHasilHutan #Kolokium #Fahutan #Kompak #THH`;
+                text = `🪵 [𝐔𝐍𝐃𝐀𝐍𝐆𝐀𝐍 𝐊𝐎𝐋𝐎𝐊𝐈𝐔𝐌 𝐊𝐀𝐒𝐔𝐀𝐑𝐈𝐍𝐀 𝐊𝐀𝐑𝐒𝐀] 🪵\n\nHalo Kasuarina Karsa!! \nIbarat balok kayu yang siap diukir menjadi sebuah karya bernilai tinggi, sebuah rancangan penelitian yang kokoh telah dipersiapkan dengan matang. Langkah awal untuk menorehkan jejak inovasi dan kontribusi di bidang Teknologi Hasil Hutan sudah di depan mata! \n\nOleh karena itu, kami mengundang Akang Teteh dan rekan-rekan sekalian untuk hadir serta memberikan dukungan pada Kolokium dari:\n\n👤 ${data.nama} / ${data.nim}\n📝 "${data.judul}"\n\n👨🏻‍🏫Dosen Pembimbing Utama:\n${data.dosbing1}\n\n👨🏻‍🏫Dosen Pembimbing Anggota:\n${data.dosbing2 || '-'}\n\n👩🏻‍🏫Dosen Moderator :\n${data.moderator}\n\n📆 Hari, Tanggal : ${tgl}\n⏰ Pukul : ${data.jamMulai} - ${data.jamSelesai} WIB\n📍Tempat : ${data.ruangan}\n\nMari bersama-sama saling menguatkan akar semangat dan memberikan masukan yang membangun agar penelitian ini tumbuh kokoh. Kehadiran Akang Teteh semuanya sangat kami nantikan. 🪵\n\nTerima kasih.\n\nWassalamualaikum Warrahmatullahi Wabarakatuh.\n\n#KolokiumKasuarinaKarsa #TeknologiHasilHutan #Kolokium #Fahutan #Kompak #THH`;
             } else {
-                text = `🪵[𝐔𝐍𝐃𝐀𝐍𝐆𝐀𝐍 𝐒𝐄𝐌𝐈𝐍𝐀𝐑 𝐇𝐀𝐒𝐈𝐋 𝐊𝐀𝐒𝐔𝐀𝐑𝐈𝐍𝐀 𝐊𝐀𝐑𝐒𝐀]🪵
-
-Halo Kasuarina Karsa!! 
-
-Ibarat kayu gelondongan yang telah melewati panjangnya proses pemotongan, pengeringan, dan pengolahan, kini saatnya mempersembahkan produk akhir yang bernilai tinggi. Perjalanan penelitian yang mengasah dedikasi di bidang Teknologi Hasil Hutan akhirnya mencapai puncaknya! 
-
-Oleh karena itu, kami mengundang Akang Teteh dan rekan-rekan sekalian untuk hadir serta merayakan pencapaian pada Seminar Hasil dari:
-
-👤 ${data.nama} / ${data.nim}
-📝 "${data.judul}"
-
-👨🏻‍🏫Dosen Pembimbing Utama:
-${data.dosbing1}
-👨🏻‍🏫Dosen Pembimbing Anggota:
-${data.dosbing2 || '-'}
-👩🏻‍🏫Dosen Moderator:
-${data.moderator}
-
-📆 Hari, Tanggal : ${tgl}
-⏰ Pukul : ${data.jamMulai} - ${data.jamSelesai} WIB
-📍Tempat : ${data.ruangan}
-
-Mari hadir untuk mengapresiasi mahakarya yang telah diukir dengan kerja keras dan memetik manfaat dari keilmuan yang dipaparkan. Kehadiran Akang Teteh semuanya sangat kami nantikan.
-
-Terima kasih.
-Wassalamualaikum Warrahmatullahi Wabarakatuh.
-
-#SemhasKasuarinaKarsa #TeknologiHasilHutan #SeminarHasil #Fahutan #Kompak #THH`;
+                text = `🪵[𝐔𝐍𝐃𝐀𝐍𝐆𝐀𝐍 𝐒𝐄𝐌𝐈𝐍𝐀𝐑 𝐇𝐀𝐒𝐈𝐋 𝐊𝐀𝐒𝐔𝐀𝐑𝐈𝐍𝐀 𝐊𝐀𝐑𝐒𝐀]🪵\n\nHalo Kasuarina Karsa!! \n\nIbarat kayu gelondongan yang telah melewati panjangnya proses pemotongan, pengeringan, dan pengolahan, kini saatnya mempersembahkan produk akhir yang bernilai tinggi. Perjalanan penelitian yang mengasah dedikasi di bidang Teknologi Hasil Hutan akhirnya mencapai puncaknya! \n\nOleh karena itu, kami mengundang Akang Teteh dan rekan-rekan sekalian untuk hadir serta merayakan pencapaian pada Seminar Hasil dari:\n\n👤 ${data.nama} / ${data.nim}\n📝 "${data.judul}"\n\n👨🏻‍🏫Dosen Pembimbing Utama:\n${data.dosbing1}\n\n👨🏻‍🏫Dosen Pembimbing Anggota:\n${data.dosbing2 || '-'}\n\n👩🏻‍🏫Dosen Moderator :\n${data.moderator}\n\n📆 Hari, Tanggal : ${tgl}\n⏰ Pukul : ${data.jamMulai} - ${data.jamSelesai} WIB\n📍Tempat : ${data.ruangan}\n\nMari hadir untuk mengapresiasi mahakarya yang telah diukir dengan kerja keras dan memetik manfaat dari keilmuan yang dipaparkan. Kehadiran Akang Teteh semuanya sangat kami nantikan. \n\nTerima kasih.\n\nWassalamualaikum Warrahmatullahi Wabarakatuh.\n\n#SemhasKasuarinaKarsa #TeknologiHasilHutan #SeminarHasil #Fahutan #Kompak#THH`;
             }
 
-            const ta = document.getElementById('captionClipboard');
-            ta.value = text;
-            ta.select();
-            document.execCommand('copy');
-            showModal('Tersalin!', 'Caption undangan berhasil disalin ke clipboard.', 'info');
+            try {
+                if (navigator.clipboard && window.isSecureContext) {
+                    await navigator.clipboard.writeText(text);
+                    showModal('Tersalin!', 'Caption undangan berhasil disalin ke clipboard Anda.', 'success');
+                } else {
+                    throw new Error("Clipboard API not available");
+                }
+            } catch (err) {
+                // Fallback method
+                const ta = document.getElementById('captionClipboard');
+                ta.value = text;
+                ta.style.display = 'block';
+                ta.select();
+                try {
+                    document.execCommand('copy');
+                    showModal('Tersalin!', 'Caption berhasil disalin menggunakan fallback method.', 'success');
+                } catch (fallbackErr) {
+                    showModal('Gagal Menyalin', 'Browser Anda memblokir fungsi penyalinan teks. Mohon blok dan salin manual.', 'error');
+                }
+                ta.style.display = 'none';
+            }
         }
 
         function loginAdmin() {
@@ -684,9 +776,16 @@ Wassalamualaikum Warrahmatullahi Wabarakatuh.
             }
 
             tbody.innerHTML = allSubmissions.map(sub => {
-                const createdDate = new Date(sub.createdAt).toLocaleDateString('id-ID', {day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit'});
+                let createdDate = '-';
+                try {
+                    const d = new Date(sub.createdAt);
+                    if (!isNaN(d.getTime())) {
+                        createdDate = d.toLocaleDateString('id-ID', {day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit'});
+                    }
+                } catch(e) {}
+
                 return `
-                    <tr class="hover:bg-[#150a0a] transition-colors">
+                    <tr class="hover:bg-[#150a0a] transition-colors border-b border-gray-800/30">
                         <td class="p-4 text-gray-500 text-xs whitespace-nowrap align-top">${createdDate}</td>
                         <td class="p-4 align-top">
                             <div class="font-bold text-white">${sub.nama}</div>
@@ -703,18 +802,24 @@ Wassalamualaikum Warrahmatullahi Wabarakatuh.
                             <div class="text-gray-400"><i class="fa-regular fa-clock mr-1"></i>${sub.jamMulai} - ${sub.jamSelesai} WIB</div>
                             <div class="text-red-400"><i class="fa-solid fa-location-dot mr-1"></i>${sub.ruangan}</div>
                         </td>
-                        <td class="p-4 align-top text-xs text-gray-300 max-w-xs">
-                            <p class="line-clamp-3" title="${sub.judul}">${sub.judul}</p>
+                        <td class="p-4 align-top text-xs text-gray-300">
+                            <p class="whitespace-normal min-w-[200px] leading-relaxed">${sub.judul}</p>
                         </td>
                         <td class="p-4 align-top">
-                            <div class="flex flex-col gap-2 w-44">
-                                <select onchange="updateStatus('${sub.id}', this.value)" class="bg-[#050505] border border-gray-700 text-white rounded-lg px-3 py-2 text-xs outline-none focus:border-red-600 cursor-pointer">
+                            <div class="flex flex-col gap-2 w-44 mx-auto">
+                                ${sub.fotoUrl 
+                                    ? `<a href="${sub.fotoUrl}?download=" class="bg-blue-900/60 hover:bg-blue-800 text-blue-100 border border-blue-700 px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex justify-center items-center gap-1 shadow-md w-full"><i class="fa-solid fa-file-image"></i> Unduh Pas Foto</a>` 
+                                    : '<span class="text-xs text-gray-600 mb-1 text-center w-full block italic">Tidak ada foto</span>'}
+                                
+                                <select onchange="updateStatus('${sub.id}', this.value)" class="bg-[#050505] border border-gray-700 text-white rounded-lg px-3 py-2 text-xs outline-none focus:border-red-600 cursor-pointer shadow-sm w-full">
                                     <option value="Terkirim" ${sub.status === 'Terkirim' ? 'selected' : ''}>[1] Terkirim</option>
                                     <option value="Diproses" ${sub.status === 'Diproses' ? 'selected' : ''}>[2] Diproses</option>
                                     <option value="Selesai" ${sub.status === 'Selesai' ? 'selected' : ''}>[3] Selesai</option>
                                 </select>
-                                ${sub.fileUrl ? `<a href="${sub.fileUrl}" target="_blank" class="text-xs text-green-400 hover:underline mb-1"><i class="fa-solid fa-check-circle"></i> File Terunggah</a>` : ''}
-                                <input type="file" accept="image/*" onchange="uploadDesignFile('${sub.id}', this)" class="bg-[#050505] border border-gray-700 text-gray-400 rounded-lg px-2 py-1.5 text-xs outline-none focus:border-red-600 file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-[10px] file:font-bold file:bg-red-950 file:text-red-400 hover:file:bg-red-900 cursor-pointer w-full">
+                                
+                                ${sub.fileUrl ? `<a href="${sub.fileUrl}?download=" class="text-xs text-green-400 hover:underline flex items-center justify-center gap-1 w-full"><i class="fa-solid fa-check-circle"></i> File Design Ada</a>` : ''}
+                                
+                                <input type="file" accept="image/*" onchange="uploadDesignFile('${sub.id}', this)" class="bg-[#050505] border border-gray-700 text-gray-400 rounded-lg px-2 py-1.5 text-xs outline-none focus:border-red-600 file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-[10px] file:font-bold file:bg-red-950 file:text-red-400 hover:file:bg-red-900 cursor-pointer w-full mt-1">
                             </div>
                         </td>
                     </tr>
@@ -723,50 +828,56 @@ Wassalamualaikum Warrahmatullahi Wabarakatuh.
         }
 
         async function updateStatus(id, newStatus) {
-            await supabaseClient.from('pendaftaran_copm').update({ status: newStatus }).eq('id', id);
-            fetchSubmissions();
+            if(!supabaseClient) return;
+            try {
+                await supabaseClient.from('pendaftaran_copm').update({ status: newStatus }).eq('id', id);
+                fetchSubmissions();
+            } catch(e) {
+                console.error(e);
+            }
         }
 
         async function uploadDesignFile(id, inputElement) {
             const file = inputElement.files[0];
-            if (!file) return;
+            if (!file || !supabaseClient) return;
 
             const btnParent = inputElement.parentElement;
             const loadingText = document.createElement('div');
-            loadingText.className = "text-xs text-yellow-500 mt-1";
-            loadingText.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengunggah file...';
+            loadingText.className = "text-xs text-yellow-500 mt-2 flex items-center justify-center gap-1 w-full";
+            loadingText.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengunggah...';
             btnParent.appendChild(loadingText);
             inputElement.disabled = true;
 
-            const fileExt = file.name.split('.').pop();
-            const fileName = `${id}_${Date.now()}.${fileExt}`;
-            const filePath = `hasil_design/${fileName}`;
+            try {
+                const fileExt = file.name.split('.').pop();
+                const fileName = `${id}_${Date.now()}.${fileExt}`;
+                const filePath = `hasil_design/${fileName}`;
 
-            const { error: uploadError } = await supabaseClient.storage
-                .from('design_copm')
-                .upload(filePath, file);
+                const { error: uploadError } = await supabaseClient.storage
+                    .from('design_copm')
+                    .upload(filePath, file);
 
-            if (uploadError) {
+                if (uploadError) throw new Error(uploadError.message);
+
+                const { data } = supabaseClient.storage.from('design_copm').getPublicUrl(filePath);
+                
+                await supabaseClient.from('pendaftaran_copm').update({ 
+                    file_design_url: data.publicUrl,
+                    status: 'Selesai'
+                }).eq('id', id);
+
+                showModal('Upload Berhasil', 'Gambar design berhasil diunggah! Status otomatis berubah menjadi Selesai.', 'success');
+                fetchSubmissions();
+            } catch (err) {
                 loadingText.remove();
                 inputElement.disabled = false;
-                showModal('Upload Gagal', 'Gagal mengunggah file. Pastikan Bucket "design_copm" sudah dibuat dan berstatus Public di Supabase.', 'error');
-                return;
+                showModal('Upload Gagal', `Gagal mengunggah: ${err.message}`, 'error');
             }
-
-            const { data } = supabaseClient.storage.from('design_copm').getPublicUrl(filePath);
-            
-            await supabaseClient.from('pendaftaran_copm').update({ 
-                file_design_url: data.publicUrl,
-                status: 'Selesai'
-            }).eq('id', id);
-
-            showModal('Upload Berhasil', 'Gambar design berhasil diunggah! Status otomatis berubah menjadi Selesai.', 'success');
-            fetchSubmissions();
         }
 
         function exportToCSV() {
             if(allSubmissions.length === 0) {
-                showModal('Peringatan', 'Database kosong, tidak ada yang diekspor.', 'warning');
+                showModal('Peringatan', 'Database kosong, tidak ada data yang bisa diekspor.', 'warning');
                 return;
             }
 
@@ -774,21 +885,31 @@ Wassalamualaikum Warrahmatullahi Wabarakatuh.
             csvContent += "Tanggal Submit,NIM,Nama,Jenis,Dosbing 1,Dosbing 2,Moderator,Tanggal Pelaksanaan,Jam Mulai,Jam Selesai,Ruangan,Judul,Status,Link File\n";
             
             allSubmissions.forEach(row => {
-                const d = new Date(row.createdAt).toLocaleString('id-ID');
-                const cleanJudul = row.judul.replace(/,/g, " "); 
+                let d = '-';
+                try {
+                    if (row.createdAt) d = new Date(row.createdAt).toLocaleString('id-ID');
+                } catch(e) {}
+                
+                const cleanJudul = row.judul ? row.judul.replace(/"/g, '""') : ''; // Escape quotes for CSV
+                
                 let rowData = `"${d}","${row.nim}","${row.nama}","${row.jenis}","${row.dosbing1}","${row.dosbing2 || ''}","${row.moderator}","${row.tanggal}","${row.jamMulai}","${row.jamSelesai}","${row.ruangan}","${cleanJudul}","${row.status}","${row.fileUrl || ''}"`;
                 csvContent += rowData + "\n";
             });
 
-            const encodedUri = encodeURI(csvContent);
-            const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", "Rekap_COPM_Kasuarina_Karsa.csv");
-            document.body.appendChild(link); 
-            link.click();
-            document.body.removeChild(link);
+            try {
+                const encodedUri = encodeURI(csvContent);
+                const link = document.createElement("a");
+                link.setAttribute("href", encodedUri);
+                link.setAttribute("download", "Rekap_COPM_Kasuarina_Karsa.csv");
+                document.body.appendChild(link); 
+                link.click();
+                document.body.removeChild(link);
+            } catch(e) {
+                showModal('Ekspor Gagal', 'Gagal memproses file CSV.', 'error');
+            }
         }
 
+        // Fungsi UI Universal (Modal)
         function showModal(title, bodyText, type = 'info', isHtml = false) {
             const modal = document.getElementById('customModal');
             const modalContent = document.getElementById('modalContent');
